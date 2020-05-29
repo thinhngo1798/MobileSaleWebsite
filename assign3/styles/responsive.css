@@ -1,0 +1,202 @@
+/* filename: responsive.css
+ purpose: reponsive design layout for index.html, product.html, about.html, inquire.html, enhancement.html
+ author: Quang Thinh Ngo
+ created: Tuesday 18/03/2020
+ last modified: Tuesday 07/04/2020
+ description: index.html */
+
+
+/*media query for display: inder 600 px */
+@media screen and (max-width: 40em)
+{
+/* Use Wrap so the welcome text will come to the second line*/
+header
+{
+    flex-wrap: wrap;
+}
+img 
+{
+    display: block;
+    margin: 0 auto;
+}
+
+#LogoTop
+{
+    max-width: 25%;
+    object-fit: scale-down;
+}
+header p
+{
+
+    margin-left: 7%;
+    font-size: 1.6em;
+    color: black;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
+ /*Main Navigation Bar*/
+ .MainNav
+ {
+     flex-wrap: wrap;
+     justify-content: center;
+ }
+  /*Anchor element in the navigation bar*/
+ .MainNav a
+ {
+     font-size: 1.0em;
+     margin: 0 0;
+     padding: 10px 15px;
+     color:white;
+     text-decoration: none;
+     text-align: center;
+ }
+ /* Main Section*/
+ /* Change from flex to max-width. Making sure all the contents are shown*/
+ #main {
+    max-width: 75%;
+    background-color: white;
+    padding: 5%;
+  }
+  
+  /* Aside Section*/
+#aside {
+    max-width: 25%;
+    border-top: none;
+    border-color: black;
+    background-color: lightblue;
+    padding: 0;
+    margin-top:0;
+  }
+  #aside nav a
+{
+    color: black;
+    margin: 0.3em;
+    padding: 0.1em 0.15em;
+    text-decoration: none;
+    font-size: 1.0em;
+    display: block;
+}
+/* All heading level 1 of the website*/
+h1
+{
+    font: italic small-caps bold 16px/2 Verdana;
+    font-size: 1.0em;
+    padding: 0em 0.2em ;
+}
+/* All heading level 2 of the website*/
+h2
+{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.9em;
+    padding-bottom: 0.2em;
+}
+/* All heading level 2 of the website*/
+h3
+{
+
+    font-size: 0.8em;
+    padding-bottom: 0.2em;
+}
+
+/* Containing different part in it, including list, table, passages, etc*/
+.ListingContent
+{
+    text-align: left;
+    padding: 0.3em 0.8em ;
+ 
+}
+.ListingContent p, .ListingContent ul
+{
+    position: relative;
+    padding: 0.4em 0.7em;
+
+}
+.ListingContent img
+{
+    margin-left: 15%;
+    width: 100%;
+}
+/* Rearrange the table to fit the new size of browser.*/
+table{
+    margin-top: 0.1em;
+    margin-left: -0.9em;
+    padding: 0em;
+    width:100%;
+  }
+  table, th, td 
+  {
+      font-size: 0.9em;
+  }
+  li img, img
+{
+    vertical-align: text-bottom;
+    max-width:80%;
+    height: auto;
+    object-fit: scale-down;
+}
+
+
+/* About Us Page Feature*/
+dl {
+    border: 3px solid #ccc;
+    padding: 0em;
+  }
+dt {
+	float: left;
+    width: 45%;
+	text-align: right;
+    font-weight: bold;
+    color: blue;
+  }
+
+dd {
+    width: 55%;
+	margin-left: 42%;
+  }
+td, th
+  {
+    text-align: center;
+  }
+
+#profilePicture
+{
+    float: right;
+    margin-right: 15%;
+    border: double;
+    padding: 20px;
+    object-fit: scale-down;
+}
+#timetable
+{
+    clear:both;
+}
+table caption 
+{
+    color: blue;
+    position: relative;
+    font-size: 2em;
+}
+#timetable table
+{
+    font-size: 0.57em;
+    position: relative;
+    margin-left: -3.5em;
+    max-width: 45%;
+    background-color: #87cefa;
+
+}
+#timetable th, caption
+{
+    font-weight: bold;
+}
+
+/* For the enquiry form of enquiry page*/
+  /* When the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+.col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+

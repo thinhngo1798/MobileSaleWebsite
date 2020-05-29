@@ -1,0 +1,380 @@
+/* filename: style.css
+ purpose: Decoration for index.html, product.html, about.html, inquire.html, enhancement.html
+ author: Quang Thinh Ngo
+ created: Wednesday 18/03/2020
+ last modified: Tuesday 07/04/2020
+ description: index.html */
+
+ /*Apply to all elements*/
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: border-box;
+    
+}
+ /*Using Flexbox to make the head sections of the website.*/
+  /*Flex-start to place the header content from the start on the right */
+header
+{
+    display: flex;
+    justify-content: flex-start;
+    background: linear-gradient(to right,rgb(0, 174, 255),lightblue);
+}
+ /*To keep the logo balance with the heading text, use max-width of 10%*/
+#LogoTop
+{
+    float: left;
+    max-width: 10%;
+    object-fit: scale-down;
+    
+}
+ /*Header content*/
+/*Using Flex Box and use align-item to place the text in the center veritically*/
+header p
+{
+    margin-left: 15%;
+    font-size: 2.6em;
+    color: black;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+ /*Main Navigation Bar*/
+.MainNav
+{
+    display: flex;
+    clear:both;
+    background-color: black;
+}
+ /*Anchor element in the navigation bar*/
+.MainNav a
+{
+    font-size: 1.25em;
+    margin: 0 0;
+    padding: 10px 15px;
+    color:white;
+    text-decoration: none;
+    text-align: center;
+}
+/*Change color on hover, using pseudo selector*/
+.MainNav a:hover
+{
+    background-color: white;
+    color:black;
+}
+/*To show the current selected page on navigation bar*/
+.MainNav .active
+{
+    background-color: white;
+    color:black;
+}
+
+/* The whole main content of the website */
+article
+{  
+display: flex;  
+flex-direction: row;
+}
+
+/* Creating two unequal columns that sits next to each other */
+  /* Main Section */
+  /* Using flex percentage. It will show how the flex item grow or shrink
+    to fit the available space of the flex container*/
+#main {
+    flex: 75%;
+    background-color: white;
+    padding: 20px;
+    background-image: url("images/BackgroundIndex.jpg");
+    background-repeat: repeat;
+  }
+  
+  /* Aside Section*/
+#aside {
+    border: solid;
+    border-top: none;
+    border-color: black;
+    justify-content: flex-end;
+    flex: 25%;
+    float:right;
+    background-color: lightblue;
+    padding: 20px;
+    margin:0;
+  }
+  /* Navigation link in the aside section*/
+#aside nav
+{
+    position: sticky;
+    top:0;
+}
+#aside nav a
+{
+    color: black;
+    margin: 0.5em;
+    padding: 0.1em 0.3em;
+    text-decoration: none;
+    font-size: 1.3em;
+    display: block;
+}
+/* Using pseudo selector to interact with navigation link*/
+#aside nav a:hover
+{
+    
+    background-color: white;
+    color:black;
+}
+/* All heading level 1 of the website*/
+h1
+{
+    font: italic small-caps bold 16px/2 Verdana;
+    font-size: 1.5em;
+    padding:0.3em 0.3em ;
+}
+/* All heading level 2 of the website*/
+h2
+{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.2em;
+    padding-bottom: 0.3em;
+}
+/* All heading level 2 of the website*/
+h3
+{
+
+    font-size: 1.1em;
+    padding-bottom: 0.3em;
+}
+
+/* Containing different part in it, including list, table, passages, etc*/
+.ListingContent
+{
+    text-align: left;
+    padding: 0.3em 2em ;
+ 
+}
+.ListingContent p, .ListingContent ul
+{
+    position: relative;
+    padding: 0.4em 2.3em;
+
+}
+.ListingContent img
+{
+    margin-left: 25%;
+}
+/* Image of the best seller product. It is landscape image so it has a separate ID*/
+#SamSungA20Image
+{
+  align-items: center;
+  object-fit: scale-down;
+  max-width:100%;
+  height: auto;
+}
+/* Footer section in the bottom of the page*/
+footer 
+{
+    font-size: small;
+    padding: 20px;
+    background-color: lightblue;
+    text-align: center;
+    width: 100%;
+}
+/* Grouping selectors, all the img or img under a li will scale-down to fit the size 
+    and maxwidth of 50%*/
+li img, img
+{
+    vertical-align: text-bottom;
+    max-width:50%;
+    height: auto;
+    object-fit: scale-down;
+}
+
+
+
+/* Product Page Feature*/
+
+table {
+    margin-top: 0.5em;
+    margin-left: 2em;
+    width:100%;
+  }
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+th, td 
+  {
+    padding: 15px;
+    text-align: left;
+ }
+ /* Have a different background color for each row in the table*/
+.Table tr:nth-child(even)
+ {
+        background-color: #eee;
+      }
+.Table tr:nth-child(odd) 
+{
+       background-color: #fff;
+      }
+.Table th 
+    {
+        background-color: lightblue;
+        color: Black;
+    }
+/* Style of the list*/
+ol li ul , ul li
+{
+    list-style: square;
+}
+/*Payment Page Features */
+#formLegend {
+  font-size: 1.6em;
+  font-weight: bold;
+}
+#formFieldset {
+  padding: 5%;
+}
+#formFieldset p, #formFieldset h3  {
+  margin: 2.5%;
+  font-size: 1.5em;
+}
+#secondAddress, #deliveredAddress_PaymentPage {
+  display: none ;
+}
+#timing {
+  top:0;
+  font-size: large;
+  position: sticky;
+  margin-top: 5%;
+}
+#time, #unit {
+  color:green;
+  font-weight: bold;
+  font-size: 2.5em;
+}
+/*Enquiry Page Features*/
+
+fieldset
+{
+    margin-left: 0;
+    padding:0.5em;
+}
+fieldset label
+{
+    padding-right:0.5em;
+}
+/* For input attributes in the form*/
+input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  
+  label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+  }
+  /* For submit button*/
+  input[type=submit], input[type=reset], #cancelButton {
+    background-color: blue;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float:right;
+    margin-left: 20px;
+  }
+  input[type=reset]
+  {
+    float: left;
+  }
+  input[type=submit], input[type=reset]:hover {
+    background-color: blue;
+  }
+  
+  .container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+  }
+  /* One column has 25% for attribute name, 75% for the second column for filled information*/
+  .col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+  }
+  
+  .col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+
+
+
+/* About Us Page Feature*/
+
+/* Definition List Feature*/
+dl {
+    border: 3px solid #ccc;
+    padding: 0.5em;
+  }
+dt {
+	float: left;
+    width: 40%;
+	text-align: right;
+    font-weight: bold;
+    color: blue;
+  }
+
+dd {
+    width: 55%;
+    margin-left: 42%;
+    word-break: break-all;
+  }
+
+#profilePicture
+{
+    float: right;
+    margin-right: 25%;
+    border: double;
+    padding: 20px;
+    object-fit: scale-down;
+}
+/* Table Features*/
+/*Table is aligned in the center as required.*/
+#timetable table
+{
+    margin-left: 0em;
+    max-width: 100%;
+    background-color: #87cefa;
+
+}
+#timetable th, caption
+{
+    font-weight: bold;
+}
+td, th
+{
+  text-align: center;
+}
+
+
+.error 
+{
+  color: red;
+  margin-left: auto;
+}
