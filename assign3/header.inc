@@ -15,6 +15,12 @@
             ?>
             <?php echo ($page=="enhancements2")?"Welcome to Enhancement 2 Page" : "";
             ?>
+            <?php echo ($page=="fix_order")?"Welcome to Fix Order Page" : "";
+            ?>
+            <?php echo ($page=="manager")?"Welcome to Manager Page" : "";
+            ?>
+            <?php echo ($page=="receipt")?"Welcome to Receipt Page" : "";
+            ?>
       </p>
       
   </header> 

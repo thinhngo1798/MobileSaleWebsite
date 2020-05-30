@@ -164,26 +164,26 @@
       $DeliveryState2 = santitise_input($DeliveryState2);
       $DeliveryPostcode2 =santitise_input($DeliveryPostcode2);
       }
-      // //Sanitising data
-      // $firstName = santitise_input($firstName);
-      // $lastName =santitise_input($lastName);
-      // $email = santitise_input($email);
-      // $BillingStreetAddress = santitise_input($BillingStreetAddress);
-      // $BillingSuburb = santitise_input($BillingSuburb);
-      // $BillingState = santitise_input($BillingState);
-      // $BillingPostcode =santitise_input($BillingPostcode);
-      // $phoneNumber =santitise_input($phoneNumber);
-      // $preferredContact = santitise_input($preferredContact);
-      // $product = santitise_input($product);
-      // $quantity = santitise_input($quantity);
-      // $feature = santitise_input($feature);
-      // $additionalFeature = santitise_input($additionalFeature);
-      // $comment = santitise_input($comment);
-      // $cardType = santitise_input($cardType);
-      // $nameOnCard =santitise_input($nameOnCard);
-      // $cardNumber = santitise_input($cardNumber);
-      // $expireDate = santitise_input($expireDate);
-      // $cvv = santitise_input($cvv);
+      //Sanitising data
+      $firstName = santitise_input($firstName);
+      $lastName =santitise_input($lastName);
+      $email = santitise_input($email);
+      $BillingStreetAddress = santitise_input($BillingStreetAddress);
+      $BillingSuburb = santitise_input($BillingSuburb);
+      $BillingState = santitise_input($BillingState);
+      $BillingPostcode =santitise_input($BillingPostcode);
+      $phoneNumber =santitise_input($phoneNumber);
+      $preferredContact = santitise_input($preferredContact);
+      $product = santitise_input($product);
+      $quantity = santitise_input($quantity);
+      $feature = santitise_input($feature);
+      $additionalFeature = santitise_input($additionalFeature);
+      $comment = santitise_input($comment);
+      $cardType = santitise_input($cardType);
+      $nameOnCard =santitise_input($nameOnCard);
+      $cardNumber = santitise_input($cardNumber);
+      $expireDate = santitise_input($expireDate);
+      $cvv = santitise_input($cvv);
 
 
       
@@ -405,9 +405,6 @@
 
       //For checking if there are any errors.
       $errorFreeFlag = true;
-      //For testing purposes.
-      //session_start();
-      //$err_msg = $_SESSION['err_msg'];
       foreach ($err_msg as $value)
       {
             if ($value != "")
@@ -418,10 +415,16 @@
 
       }
 }
-      if ($errorFreeFlag)
-      {
+      if ($errorFreeFlag) {
       // Calculate cost.
       $cost = calcCost( $product,$quantity);
+      $currentTime = date ("M,d,Y h:i:s A"); 
+      $order_status = "PENDING";
+
+      // Storing cost, currentTime and order_status into session storage.
+      $_SESSION['cost'] = $cost;
+      $_SESSION['order_time'] = $currentTime;
+      $_SESSION['order_status'] = $order_status;
       // Saving all the order information into mysql
       require_once ("settings.php");
 
@@ -434,29 +437,94 @@
             echo "<p>Database connection successful.</p>";
 
             $sql_table ="orders";
-            $query1 = "show tables like $sql_table";
-          //  $query = "insert into $sql_table ( make, model, price, yom) values ('$make', '$model', '$price','$yom')";
+            $query = "CREATE TABLE IF NOT EXISTS $sql_table (
+            `order_id` int(11) NOT NULL auto_increment PRIMARY KEY,   
+            `firstName` varchar(25) NOT NULL,  
+            `lastName` varchar(25) NOT NULL,
+            `email` varchar(40) NOT NULL,     
+            `streetAddress` varchar(40) NOT NULL,
+            `suburb` varchar(20) NOT NULL,
+            `state` varchar(3) NOT NULL,
+            `postcode` int(4) NOT NULL,
+            `phoneNumber` varchar(12) NOT NULL,
+            `preferredContact` varchar(20) NOT NULL,
+            `product` varchar(20) NOT NULL,
+            `quantity` varchar(2) NOT NULL,
+            `features` varchar(40) NOT NULL,
+            `addFeatures` varchar(40) NOT NULL,
+            `subject` varchar(40) NOT NULL,
+            `cardType` varchar(20) NOT NULL,
+            `nameOnCard` varchar(50) NOT NULL,
+            `cardNumber` int(25) NOT NULL,
+            `expireDate` varchar(5) NOT NULL,
+            `cvv` varchar(4) NOT NULL,
+            `order_cost` float  NOT NULL,
+            `order_time` date  NOT NULL,
+            `order_status` varchar(10) NOT NULL
+            )";
+            $query1 = "INSERT INTO `$sql_table` (`order_id`,`firstName`, `lastName`, `email`, `streetAddress`, `suburb`, `state`, `postcode`, `phoneNumber`, `preferredContact`, `product`, `quantity`, `features`,`addFeatures`, `subject`, `cardType`, `nameOnCard`, `cardNumber`, `expireDate`, `cvv`,`order_cost`, `order_time`, `order_status`) VALUES (NOT NULL,'$firstName','$lastName','$email', '$BillingStreetAddress','$BillingSuburb','$BillingState','$BillingPostcode','$phoneNumber','$preferredContact', '$product','$quantity','$feature','$additionalFeature','$comment','$cardType','$nameOnCard','$cardNumber','$expireDate','$cvv','$cost','$currentTime','$order_status')";
+           //$query = "select make, model, price from $sql_table where 1";
+            $query2 = "select order_id FROM $sql_table WHERE order_time = '$currentTime'";
             
 
-
-            
-            $result = mysqli_query($conn, $query1);
+            $result = mysqli_query($conn, $query);
+            $result1 = mysqli_query($conn, $query1);
+            $result2=mysqli_query($conn,$query2);
 
             if (!$result) {
                   echo "<p>Something is wrong with " ,$query, "</p>";
+                  while ($row = mysqli_fetch_assoc($result) ) {
+                        echo "<tr>\n";
+                        echo "<td> ",$row["make"],"</td>\n";
+                        echo "<td> ",$row["model"],"</td>\n";
+                        echo "<td> ",$row["price"],"</td>\n";
+                        echo "</tr>\n ";   
+                  }
             } else {
-                 echo "<p class=\"ok\">Successfully added New Car record </p>";
-                 echo "$result";
-            }
-            
-            
-           // mysqli_free_result($result);
+                 echo "<p class=\"ok\">Successfully creating orders table if the table does not exist </p>";
+                 
+   
+            //mysqli_free_result($result);
 
             mysqli_close($conn);
 
       }
+      if (!$result1) {
+            echo "<p>Something is wrong with " ,$query1, "</p>";
+
+      } else {
+           echo "<p class=\"ok\">Successfully adding information to the orders table </p>";
+
+      //mysqli_free_result($result);
+
+      mysqli_close($conn);
+
       }  
+      if (!$result2) {
+            echo "<p>Something is wrong with " ,$query2, "</p>";
+            
+      }
+      else {
+      echo "<p class=\"ok\">Successfully taking the id from orders </p>";
+      $row = mysqli_fetch_assoc($result2);
+      if ($row)  {
+            $_SESSION['order_id'] = $row["order_id"];
+            mysqli_close($conn);
+      } 
+      else
+      {
+            $_SESSION['order_id'] = 1; 
+      } 
       echo "<p> <a href='enhancements2.php'> hahaha </a> </p>";
+      }     
+      }
+      if ($result2)
+      {
+      header("Location:receipt.php");
+      }
+
+}
+      
 ?>
 </body>
 </html>

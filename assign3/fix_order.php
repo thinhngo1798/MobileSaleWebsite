@@ -33,19 +33,19 @@
      <body> 
          <!--Header and Logo-->
     <?php
-         $page = "payment";
+         $page = "fix_order";
          include 'header.inc';
     ?>
         <!--Navigation Bar-->
     <?php
-        $page = "payment";
+        $page = "fix_order";
         include 'menu.inc';
     ?>
          <hr/>
          <!--All the page content is in article. It include main section and aside.-->
          <article>   
               <section id="main">
-                  <form id="buyingForm2" method="post" action="process_order.php" novalidate="novalidate" >
+                  <form id="buyingForm" method="post" action="process_order.php" novalidate="novalidate" >
                         <fieldset id="formFieldset">
                               <legend id="formLegend">Your Information and Product Detail</legend>
                               <h3>Your personal contact: </h3>
@@ -142,8 +142,10 @@
                                            }
                                            if ($firstNameFlag && $lastNameFlag)
                                            {
-                                           echo "<p>Your Name: $firstName $lastName</p>";
-                                           $nameFlag = false;
+                                                 if ($nameFlagReturn){
+                                                      echo "<p>Your Name: $firstName $lastName</p>";
+                                                      $nameFlagReturn = false;
+                                                 }
                                            }
                                          
                                     
