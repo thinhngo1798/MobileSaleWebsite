@@ -28,11 +28,6 @@
         $page = "enhancements2";
         include 'menu.inc';
     ?>
-    <?php
-    session_start();
-     if (isset($_SESSION['firstName']) && isset($_SESSION['lastName'])&& isset($_SESSION['email']))
-    echo "<p>". $_SESSION['firstName'] . "". $_SESSION['lastName'] . "is a ". $_SESSION['email'] . $_SESSION['err_msg'][0] ."</p>";
-    ?>
          <hr/>
          <!--All the page content is in article. It include main section and aside.-->
          <article>

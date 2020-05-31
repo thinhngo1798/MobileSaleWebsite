@@ -44,97 +44,49 @@
          <!--All the page content is in article. It include main section and aside.-->
          <article>   
               <section id="main">
-                  <form id="buyingForm" method="post" action="process_order.php" novalidate="novalidate" >
+                  <form id="updateform" method="post" action="update.php" novalidate="novalidate" >
                         <fieldset id="formFieldset">
-                              <legend id="formLegend">Your Information and Product Detail</legend>
-                              <h3>Your personal contact: </h3>
-                              <p>Your Name: <span id="confirm_name"></span></p>
-                              <p>Email: <span id="confirm_email"></span></p>
-                              <p>Phone Number: <span id="confirm_phoneNumber"></span></p>
-                              <p>Preferred Contact: <span  id="confirm_preferredContact"></span></p>
-                              <h3>Billing Address: </h3>
-                              <p>Street Address: <span  id="confirm_streetAddress"></span></p>
-                              <p>Suburb: <span  id="confirm_suburb"></span></p>
-                              <p>State: <span  id="confirm_state"></span></p>
-                              <p>Postcode: <span  id="confirm_postcode"></span></p>
-                              <div id="deliveredAddress_PaymentPage">
-                                <h3>Delivery Address: </h3>
-                                <p>Street Address: <span  id="confirm_streetAddress2"></span></p>
-                                <p>Suburb: <span  id="confirm_suburb2"></span></p>
-                                <p>State: <span  id="confirm_state2"></span></p>
-                                <p>Postcode: <span  id="confirm_postcode2"></span></p>
-                              </div>
-                              <h3>Product Detail: </h3>
-                              <p>Product: <span  id="confirm_product"></span></p>
-                              <p>Quantity: <span  id="confirm_quantity"></span></p>
-                              <p>Product Features: <span  id="confirm_feature"></span></p>
-                              <p>Additional Features: <span  id="confirm_additionalFeature"></span></p>
-                              <p>Comment: <span  id="confirm_comment"></span></p>
-                              <p>Total Cost: $<span  id="confirm_cost"></span></p>
-                              <input type="hidden" name="firstName" id="firstName" />
-                              <!--Create the other hidden input here  -->
-                              <input type="hidden" name="lastName" id="lastName" />
-                              <input type="hidden" name="email" id="email" />
-                              <input type="hidden" name="BillingStreetAddress" id="streetAddress" />
-                              <input type="hidden" name="BillingSuburb" id="suburb" />
-                              <input type="hidden" name="BillingState" id="state" />   
-                              <input type="hidden" name="BillingPostcode" id="postcode" />
-                              <input type="hidden" name="phoneNumber" id="phoneNumber" />
-                              <input type="hidden" name="preferredContact" id="preferredContact" />
-                              <input type="hidden" name="product" id="product" />
-                              <input type="hidden" name="quantity" id="quantity" />
-                              <input type="hidden" name="feature" id="feature" />
-                              <input type="hidden" name="additionalFeature" id="additionalFeature" />
-                              <input type="hidden" name="comment" id="comment" />
-                              <input type="hidden" name="cost" id="cost" />
-                             
-                              <!--For delivery address-->
-                              <div id="deliverredAddressInput">
-                              <input type="hidden" name="DeliveryStreetAddress" id="streetAddress2" disabled />
-                              <input type="hidden" name="DeliverySuburb2" id="suburb2" disabled/>
-                              <input type="hidden" name="DeliveryState2" id="state2" disabled />   
-                              <input type="hidden" name="DeliveryPostcode2" id="postcode2" disabled/>
-                             </div>
-                              <h3>Payment Details: </h3>
-                              <p>
-                                <label for="cardType">Credit Card Type: </label>
-                                <select name="cardType" id="cardType">
-                                    <option value="none">Please select</option>
-                                    <option value="visa">Visa</option>
-                                    <option value="mastercard">Mastercard</option>
-                                    <option value="americanExpress">American Express</option>
-                                </select>
-                            </p>
-                            <p><label for="name">Name on Credit Card:</label>
-                                <input type="text" id="name" name="name" required="required" maxlength="40"
-                                pattern="[a-zA-Z ]+" />
-                            </p>
-                            <p><label for="cardNumber">Credit Card Number: </label>
-                                <input type="text" id="cardNumber" name="cardNumber" required="required"
-                                maxlength="16" 
-                                pattern ="\d{15,16}"/>
-                            </p>
-                            <p><label for="expireDate">Credit card expiry date: </label>
-                                <input type="text" id="expireDate" name="expireDate" 
-                                placeholder="mm-yy"
-                                required="required"
-                                pattern = "^[0-9]{2}[/][0-9]{2}$" />
-                            </p>
-                            <p><label for="cvv">Card verification value (CVV): </label>
-                                <input type="text" id="cvv" name="cvv"
-                                required="required" 
-                                maxlength= "4"
-                                pattern ="\d{3,4}"/>
-                            </p>
-                            <input type="submit" value="Check Out" />
-                          <button type="button" id="cancelButton" >Cancel Order</button>
-                      </fieldset>
+                  <h1>Display all orders: </h1>
+                 <p><label for="allOrders">Click on the checkbox and submit to get all the orders </label><input type="checkbox" name="allOrders" id="allOrders" value="allOrders" /> 
+                 </p>
+                 </br>
+
+                 <h1>Display orders for a customer by entering their name: </h1>
+                 <p><label for="personNameOrder">Click on the checkbox and fill in the name of customer</label> <input type="checkbox" name="personNameOrder" id="personNameOrder" value="personNameOrder" /> 
+                 </p>
+                  <p><label for="name">Name of the customer you are looking for his/her order:</label>
+                        <input type="text" id="name" name="name" required="required" maxlength="40"
+                        placeholder ="First Name + Last Name"
+                        pattern="[a-zA-Z ]+" />
+                  </p>
+               </br>
+
+               <h1>Display orders for a specific product by entering its name: </h1>
+                 <p><label for="productNameOrder">Click on the checkbox and fill in the name of customer</label> <input type="checkbox" name="productNameOrder" id="productNameOrder" value="productNameOrder" /> 
+                 </p>
+                  <p><label for="product">Name of the customer you are looking for his/her order:</label>
+                        <input type="text" id="product" name="product" required="required" maxlength="40"
+                        placeholder ="Example: Iphone11 IphoneX SamsungGalaxyNote10"
+                        pattern="[a-zA-Z ]+" />
+                  </p>
+               </br>
+
+               <h1>Display all orders that are pending: </h1>
+                 <p><label for="allPendingOrders">Click on the checkbox and submit to get all the orders </label><input type="checkbox" name="allPendingOrders" id="allPendingOrders" value="allPendingOrders" /> 
+                 </p>
+                 </br>
+
+                 <h1>Display orders sorted by total cost: </h1>
+                 <p><label for="sortedOrders">Click on the checkbox and submit to get all the orders </label><input type="checkbox" name="sortedOrders" id="sortedOrders" value="sortedOrders" /> 
+                 </p>
+                 </br>
                   
+               <input type="submit" value="Process Request" >
+                <input type="reset" value="Reset"/>
               </form>
            
              </section>
              <aside id="aside">
-                    <div id ="timing">To make your payment secured, this window will be close in <br/> <span id="time">05:00</span> <span id="unit" >minutes!</span></div>
               </aside>
          </article>
          <?php

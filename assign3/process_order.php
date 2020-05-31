@@ -418,7 +418,7 @@
       if ($errorFreeFlag) {
       // Calculate cost.
       $cost = calcCost( $product,$quantity);
-      $currentTime = date ("M,d,Y h:i:s A"); 
+      $currentTime = date('Y-m-d H:i:s');
       $order_status = "PENDING";
 
       // Storing cost, currentTime and order_status into session storage.
