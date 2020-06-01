@@ -1,8 +1,8 @@
 <!--/* filename: payment.php
  author: Quang Thinh Ngo
  purpose: to create a payment page for user to input there credit card information. It also shows a summary of customer's details and product's details.
- created: Tuesday 21/04/2020
- last modified: Tuesday 05/05/2020 
+ created: Sunday 17/05/2020
+ last modified: Monday 01/06/2020
  */
 -->
 

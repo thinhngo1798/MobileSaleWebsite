@@ -1,11 +1,10 @@
 <!--/* filename: fix_order.php
  author: Quang Thinh Ngo
  purpose: to create a payment page for user to input there credit card information. It also shows a summary of customer's details and product's details.
- created: Tuesday 21/04/2020
- last modified: Tuesday 05/05/2020 
+ created: Sunday 17/05/2020
+ last modified: Monday 01/06/2020-->
  */
 -->
-
 
 <!DOCTYPE html>
  <html lang="en"> 
@@ -35,10 +34,7 @@
     <?php
          $page = "fix_order";
          include 'header.inc';
-    ?>
-        <!--Navigation Bar-->
-    <?php
-        $page = "fix_order";
+        echo "<!--Navigation Bar-->";
         include 'menu.inc';
     ?>
          <hr/>
@@ -50,11 +46,12 @@
                               <legend id="formLegend">Your Information and Product Detail</legend>
                               <h3>Your personal contact: </h3>
                               <?php
+                              /* To prevent user directly access fix_order.php*/
+                              if (!isset($_SERVER['HTTP_REFERER'])) {
+                                    header('location:enquire.php');
+                                    exit;
+                              }
                               session_start();
-                              foreach($_SESSION['err_msg'] as $value)
-                                     {
-                                           echo "$value \n";
-                                     }
                               if (isset($_SESSION['err_msg'])) {
                               $firstName = $_SESSION['firstName'];
                               $lastName= $_SESSION['lastName']; 
@@ -122,6 +119,7 @@
                                            else
                                            {
                                                 echo "<input type='hidden' name='firstName' id='firstName' value='$firstName' />";
+                                                $firstNameFlag =false;
                                            }
                                           }
                                           if ( $lastNameFlag) {
@@ -137,6 +135,8 @@
                                            else
                                            {
                                                 echo "<input type='hidden' name='lastName' id='lastName' value='$lastName' />";
+                                                $lastNameFlag = false;
+
                                            }
 
                                            }
@@ -206,12 +206,13 @@
                                            }                                           
                                            else 
                                            {
-                                                 if ($suburbFlag)
+                                                 if ($suburbFlagReturn)
                                                  {
                                                 echo "<p>Your suburb address: $BillingSuburb </p>";
-                                                $suburbFlag = false;
-                                                 }
+                                                $suburbFlagReturn = false;
+                                                 
                                                  echo "<input type='hidden' name='BillingSuburb' id='BillingSuburb' value='$BillingSuburb' />";
+                                                 }
                                            }
                                           }
                                           if ( $stateFlag) {
@@ -234,13 +235,14 @@
                                            }                                           
                                            else 
                                            {
-                                                 if ($stateFlag)
+                                                 if ($stateFlagReturn)
                                                  {
                                                 echo "<p>Your state address: $BillingState </p>";
-                                                $stateFlag = false;
-                                                 }
+                                                $stateFlagReturn = false;
+                                                 
                                                  echo "<input type='hidden' name='BillingState' id='BillingState' value='$BillingState' />";
-                                           }
+                                                }
+                                          }
                                           }
                                           if ( $postcodeFlag) {
                                            if (($value == "Postcode cannot be empty" )||  ($value == "Postcode must be exactly 4 digits"
@@ -255,13 +257,14 @@
                                            }                                           
                                            else 
                                            {
-                                                 if ($postcodeFlag)
+                                                 if ($postcodeFlagReturn)
                                                  {
                                                 echo "<p>Your postcode address: $BillingPostcode </p>";
-                                                $postcodeFlag = false;
-                                                 }
+                                                $postcodeFlagReturn = false;
+                                                 
                                                  echo "<input type='hidden' name='BillingPostcode' id='BillingPostcode' value='$BillingPostcode' />";
-                                           }
+                                                }
+                                          }
                                           }
                                           if ( $phoneFlag) {
                                            if (($value == "Phone number cannot be empty" ) ||  ($value == "Your phone number is in wrong format. It must be 04XX XXX XXX or 04XXXXXXXX") || ($value=="Phone number must be exactly 10 digits and 2 spaces"))
@@ -277,13 +280,14 @@
                                            }                                           
                                            else 
                                            {
-                                                 if ($phoneFlag)
+                                                 if ($phoneFlagReturn)
                                                  {
                                                 echo "<p>Your phone number: $phoneNumber </p>";
-                                                $phoneFlag = false;
-                                                 }
+                                                $phoneFlagReturn = false;
+                                                 
                                                  echo "<input type='hidden' name='phoneNumber' id='phoneNumber' value='$phoneNumber' />";
-                                           }
+                                                }
+                                          }
                                           }
                                           if ( $contactFlag) {
                                            if (($value == "Preferred contact cannot be empty" )||  ($value == "Preferred contact is invalid"))
@@ -301,13 +305,15 @@
                                            }                                           
                                            else 
                                            {
-                                                 if ($contactFlag)
+                                                 if ($contactFlagReturn)
                                                  {
                                                 echo "<p>Your preferred contact: $preferredContact </p>";
-                                                $contactFlag = false;
-                                                 }
+                                                $contactFlagReturn = false;
+                                                 
                                                  echo "<input type='hidden' name='preferredContact' id='preferredContact' value='$preferredContact' />";
-                                           }
+                                                }
+                                          
+                                                }
                                           }
                                           if ( $productFlag) {
                                            if (($value == "Product cannot be empty" ) ||  ($value == "Product is invalid"))
@@ -326,13 +332,15 @@
                                            }                                           
                                            else 
                                            {
-                                                 if ($productFlag)
+                                                 if ($productFlagReturn)
                                                  {
                                                 echo "<p>Your product: $product </p>";
-                                                $productFlag = false;
-                                                 }
+                                                $productFlagReturn = false;
+                                                 
                                                  echo "<input type='hidden' name='product' id='product' value='$product' />";
-                                           }
+                                          
+                                                }
+                                          }
                                           }
                                           if ( $quantityFlag) {
                                            if (($value == "Quantity cannot be empty" ) ||  ($value == "Your quantity must be a number") || ($value == "Quantity cannot be negative or 0."))
@@ -348,56 +356,58 @@
                                            }                                           
                                            else 
                                            {
-                                                 if ($quantityFlag)
+                                                 if ($quantityFlagReturn)
                                                  {
                                                 echo "<p>Your quantity: $quantity </p>";
-                                                $quantityFlag = false;
-                                                 }
+                                                $quantityFlagReturn = false;
+                                                 
                                                  echo "<input type='hidden' name='quantity' id='quantity' value='$quantity' />";
-                                           }
+                                                }
+                                          }
                                           }
                                           if ( $featureFlag) {
                                            if ($value == "Feature cannot be empty" )
                                            {
-                                                 echo "<p class='error'> $value </p>";
-                                                 echo "<legend>Product Features: </legend>
-                                                 <label for='black'><input type='checkbox' name='features[]' id='black' value='black' /> Colour: Black</label> 
-                                                 <label for='white'><input type='checkbox' name='features[]' value='white' id='white'>Colour: White</label>
-                                                 <label for='green'><input type='checkbox' name='features[]' value='green' id='green'/>Colour: Green</label>";
-                                                 $featureFlag = false;
-                                                 continue;
+                                                echo "<p class='error'> $value </p>";
+                                                echo "<label for='feature'>Your features: </label>";
+                                                echo "<input type='text' id='feature' name='feature' placeholder='Your features..'
+                                                maxlength='12'
+                                                required='required'/>";
+                                                $featureFlag = false;
+                                                continue;
                                            }                                           
                                            else 
                                            {
-                                                 if ($featureFlag)
+                                                 if ($featureFlagReturn)
                                                  {
                                                 echo "<p>Your features: $feature </p>";
-                                                $featureFlag = false;
-                                                 }
+                                                $featureFlagReturn = false;
+                                                 
                                                  echo "<input type='hidden' name='feature' id='feature' value='$feature' />";
-                                           }
+                                                }
+                                          }
                                           }
                                           if ( $additionalFlag) {
                                            if ($value == "Additional feature cannot be empty" )
                                            {
                                                  echo "<p class='error'> $value </p>";
-                                                 echo "<legend>Product Features: </legend>
-                                                 <label for='black'><input type='checkbox' name='addFeatures[]' id='Ram3G' value='Ram3G' /> Ram 3GB</label> 
-                                                 <label for='white'><input type='checkbox' name='addFeatures[]' value='Ram4G' id='Ram4G'>Ram 4GB</label>
-                                                 <label for='1YWarranty'><input type='checkbox' name='addFeatures[]' id='1YWarranty' value='1YWarranty' />Wanrranty: 1Y</label>
-                                                 <label for='2YWarranty'><input type='checkbox' name='addFeatures[]' value='2YWarranty' id='2YWarranty' />Warranty: 2Y</label>";
+                                                 echo "<label for='additionalFeature'>Additional features: </label>";
+                                                 echo "<input type='text' id='additionalFeature' name='additionalFeature' placeholder='Your additional features..'
+                                                 maxlength='12'
+                                                 required='required'/>";
                                                  $additionalFlag = false;
                                                  continue;
                                            }                                           
                                            else 
                                            {
-                                                 if ($additionalFlag)
+                                                 if ($additionalFlagReturn)
                                                  {
                                                 echo "<p>Your additional feature: $additionalFeature </p>";
-                                                $additionalFlag = false;
-                                                 }
+                                                $additionalFlagReturn = false;
+                                                 
                                                  echo "<input type='hidden' name='additionalFeature' id='additionalFeature' value='$additionalFeature' />";
-                                           }
+                                                }
+                                          }
                                           }
                                      }
                                      echo "<p>Comment: $comment </p>";

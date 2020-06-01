@@ -1,7 +1,8 @@
 <!-- filename: receipt.php
  author: Quang Thinh Ngo
- created: Tuesday 18/03/2020
- last modified: Tuesday 07/04/2020-->
+ created: Sunday 17/05/2020
+ last modified: Monday 01/06/2020-->
+
  
  <!DOCTYPE html>
 <html lang="en"> 
@@ -37,6 +38,11 @@
             <!--Main section which contains the main content.-->
             <section id="main">
       <?php
+      /* To prevent user directly access update.php*/
+      if (!isset($_SERVER['HTTP_REFERER'])) {
+            header('location:manager.php');
+            exit;
+            }     
       function santitise_input($data) {
             //Removing leading or trailing spaces.
             $data = trim($data);
@@ -46,9 +52,22 @@
             $data = htmlspecialchars($data);
             return $data; 
       } 
-      if (isset($_POST["status"])) {
-            $status = $_POST["status"];
+      if (isset($_POST["status"]) || (isset($_POST["cancelOrder"]))) {
+            if (isset($_POST["status"])) {
+                  $status = $_POST["status"];
+            }
+            else
+            {
+                  $status=0;
+            }
             $order_id = $_POST["order_id"];
+            if (isset($_POST["cancelOrder"])) {
+                  $cancelOrder = $_POST["cancelOrder"];
+            }
+            else
+            {
+                  $cancelOrder=0;
+            }
             require_once ("settings.php");
 
       $conn = mysqli_connect($host, $user, $pwd, $sql_db);
@@ -58,23 +77,38 @@
       }
       else {
             $sql_table ="orders";
-            $query = "UPDATE $sql_table SET order_status='$status' WHERE order_id=' $order_id'";
+            if ($cancelOrder)
+            {
+            $query = "DELETE FROM $sql_table WHERE ((order_id='$order_id') and (order_status='PENDING'))";
+            }
+            else
+            {
+            $query = "UPDATE $sql_table SET order_status='$status' WHERE order_id='$order_id'";
+            }
             $result = mysqli_query($conn, $query);
             if (!$result) {
                   echo "<p>Something is wrong with " ,$query, "</p>";
             } else {
+                  if ($cancelOrder)
+                  {
+                        echo "The request to delete the order  $order_id has been processed. Only pending orders can be deleted.
+                        Otherwise, the order still exists";
+                  }
+                  else
+                  {
                   echo "The request to change the status of  $order_id is successful";
+                  }
                   mysqli_close($conn);
       }
       }
       session_start();
       $_POST["allOrders"]              =$_SESSION['allOrders'];
       $_POST["personNameOrder"]       =$_SESSION['personNameOrder'];
-      $_POST["productNameOrder"]              =$_SESSION['name'];
-      $_POST["allPendingOrders"]       =$_SESSION['productNameOrder'];
-      $_POST["sortedOrders"]             =$_SESSION['product'];
-      $_POST["product"]       =$_SESSION['allPendingOrders'];
-      $_POST["name"]           =$_SESSION['sortedOrders'];
+      $_POST["productNameOrder"]              =$_SESSION['productNameOrder'];
+      $_POST["allPendingOrders"]       =$_SESSION['allPendingOrders'];
+      $_POST["sortedOrders"]             =$_SESSION['sortedOrders'];
+      $_POST["product"]       =$_SESSION['product'];
+      $_POST["name"]           =$_SESSION['name'];
 }
       else
       {
@@ -83,40 +117,48 @@
             {
                   $_SESSION['allOrders']              =$_POST["allOrders"];
             }
+            else
+            $_SESSION['allOrders'] = 0;
 
              if (isset($_POST["personNameOrder"]))
             {
                   $_SESSION['personNameOrder']        =$_POST["personNameOrder"];
             }
-
+            else
+            $_SESSION['personNameOrder'] =0;
             if (isset($_POST["name"]))
             {
                   $_SESSION['name']                   =$_POST["name"];
             }
-
+            else
+            $_SESSION['name'] =0;
             if (isset($_POST["productNameOrder"]))
             {
                   $_SESSION['productNameOrder']       =$_POST["productNameOrder"];
             }
-
+            else
+            $_SESSION['productNameOrder'] =0;
             if (isset($_POST["product"]))
             {
                   
                   $_SESSION['product']                =$_POST["product"];
             }
-
+            else
+            $_SESSION['product'] =0;
             if (isset($_POST["allPendingOrders"]))
             {
                   
                   $_SESSION['allPendingOrders']       =$_POST["allPendingOrders"];
             }
-
+            else
+            $_SESSION['allPendingOrders'] =0;
              if (isset($_POST["sortedOrders"]))
             {
                   
                   $_SESSION['sortedOrders']           =$_POST["sortedOrders"];
             }
-
+            else
+            $_SESSION['sortedOrders'] =0;
       
      
       
@@ -255,7 +297,9 @@
                         echo "<table >\n";
                         echo "<tr>\n "
                         ."<th scope='col'>Change Order Status</th>\n"
+                        ."<th scope='col'>cancelOrder Order</th>\n"
                         ."<th scope='col'>Order_Id</th>\n"
+                        ."<th scope='col'>Order status</th>\n"
                         ."<th scope='col'>First name</th>\n"
                         ."<th scope='col'>Last name</th>\n"
                         ."<th scope='col'>Email</th>\n"
@@ -272,7 +316,6 @@
                         ."<th scope='col'>Comment</th>\n"
                         ."<th scope='col'>Order Cost</th>\n"
                         ."<th scope='col'>Order name</th>\n"
-                        ."<th scope='col'>Order status</th>\n"
                         ."</tr>\n ";
       
                         while ($row = mysqli_fetch_assoc($result) ) {
@@ -284,10 +327,18 @@
                         <input type='text' id='status' name='status' 
                         placeholder ='PENDING/FULFILLED/PAID/ACHIEVED' />
                         <input type='hidden' id='order_id' name='order_id' value='$currentID'/> 
-                        <input type='submit' value='Change status' />
+                        <input id ='updateButton' type='submit' value='Change status' />
+                        </form>
+                        </td>\n";
+                        echo "<td> 
+                        <form method='post' action='update.php' novalidate='novalidate' >
+                        <input type='hidden' id='order_id' name='order_id' value='$currentID'/> 
+                        <input type='hidden' id='cancelOrder' name ='cancelOrder' value ='1' />
+                        <input type='submit' id ='updateButton' value = 'cancelOrder order' />
                         </form>
                         </td>\n";
                               echo "<td> ",$row["order_id"],"</td>\n";
+                              echo "<td> ",$row["order_status"],"</td>\n";
                               echo "<td> ",$row["firstName"],"</td>\n";
                               echo "<td> ",$row["lastName"],"</td>\n";
                               echo "<td> ",$row["email"],"</td>\n";
@@ -304,7 +355,6 @@
                               echo "<td> ",$row["subject"],"</td>\n";
                               echo "<td> ",$row["order_cost"],"</td>\n";
                               echo "<td> ",$row["order_time"],"</td>\n";
-                              echo "<td> ",$row["order_status"],"</td>\n";
                               echo "</tr>\n ";   
                   }
                   echo "</table >\n";

@@ -8,11 +8,17 @@
 </head>
 <body>
 <?php
+      /* To prevent user directly access process_order.php*/
+      if (!isset($_SERVER['HTTP_REFERER'])) {
+      header('location:enquire.php');
+      exit;
+      }     
 
       /*destroy old session*/
       session_start();
       $_SESSION = array();
       session_destroy();   
+      
       /* Sanitizing the input data for security*/ 
       function santitise_input($data) {
             //Removing leading or trailing spaces.
@@ -152,18 +158,8 @@
       $expireDate = $_POST["expireDate"];
       $cvv = $_POST["cvv"];
 
-      // //For delivery address
-      if (isset($_POST["DeliveryStreetAddress"])) { 
-      $DeliveryStreetAddress = $_POST["DeliveryStreetAddress"];
-      $DeliverySuburb2 = $_POST["DeliverySuburb2"];
-      $DeliveryState2 = $_POST["DeliveryState2"];
-      $DeliveryPostcode2 = $_POST["DeliveryPostcode2"];
+      
 
-      $DeliveryStreetAddress = santitise_input($DeliveryStreetAddress);
-      $DeliverySuburb2 = santitise_input($DeliverySuburb2);
-      $DeliveryState2 = santitise_input($DeliveryState2);
-      $DeliveryPostcode2 =santitise_input($DeliveryPostcode2);
-      }
       //Sanitising data
       $firstName = santitise_input($firstName);
       $lastName =santitise_input($lastName);
@@ -273,6 +269,16 @@
             $err_msg[]="Product is invalid";
       }
 
+      if (strlen($quantity) == 0) {
+            $err_msg[] = "Quantity cannot be empty";
+      } 
+      else if (!preg_match("/\d{1,4}/",$quantity)) {
+            $err_msg[] = "Your quantity must be a number";
+      }
+      else if ($quantity <= 0) {
+            $err_msg[] = "Quantity cannot be negative or 0.";
+      } 
+
       if (strlen($feature) == 0) {
             $err_msg[] = "Feature cannot be empty";
       }
@@ -281,15 +287,7 @@
             $err_msg[] = "Additional feature cannot be empty";
       } 
 
-      if (strlen($quantity) == 0) {
-            $err_msg[] = "Quantity cannot be empty";
-      } 
-      else if (!preg_match("/\d{1,3}/",$phoneNumber)) {
-            $err_msg[] = "Your quantity must be a number";
-      }
-      else if (strlen($quantity) <= 0) {
-            $err_msg[] = "Quantity cannot be negative or 0.";
-      } 
+
       
       if (strlen($cardType) == 0) {
             $err_msg[] = "Type of card cannot be empty";
@@ -336,43 +334,8 @@
             $err_msg[] = "CVV must be 3 or 4 digits";
       }
 
-      // For the case there are delivery address.
-      if (isset($_POST["DeliveryStreetAddress"])) {
-            if (strlen($DeliveryStreetAddress) == 0) {
-                  $err_msg[] = "Deliver street Address cannot be empty";
-            } 
-            else if (strlen($DeliveryStreetAddress) >40) {
-                  $err_msg[]="Deliver Street address can be maximum of 40 characters";
-            }
-      
-            if (strlen($DeliverySuburb2) == 0) {
-                  $err_msg[] = "Deliver Suburb cannot be empty";
-            } 
-            else if (strlen($DeliverySuburb2) >20) {
-                  $err_msg[]="Deliver Suburb can be maximum of 20 characters";
-            }
-      
-            if (strlen($DeliveryState2) == 0) {
-                  $err_msg[] = " Deliver State cannot be empty";
-            } 
-            else if ($DeliveryState2 != "VIC" && $DeliveryState2 != "NSW" && $DeliveryState2 != "QLD" && $DeliveryState2 != "NT" && $DeliveryState2 != "WA"&& $DeliveryState2 != "SA" && $DeliveryState2 != "TAS" && $DeliveryState2 != "ACT" ) {
-                  $err_msg[]="Deliver State is invalid";
-            }
-      
-            if (strlen($DeliveryPostcode2) == 0) {
-                  $err_msg[] = "Deliver Postcode cannot be empty";
-            } 
-            else if (strlen($DeliveryPostcode2) != 4) {
-                  $err_msg[]="Deliver Postcode must be exactly 4 digits";
-            }
-            else if (true)
-            {
-                  $err_msg[] = checkPostcode($DeliveryState2,$DeliveryPostcode2);
-            }
       }
       //Saving data into Session.
-      // Set the lifetime arguments to 3600 seconds = 60 mins.
-      session_set_cookie_params(3600);
       session_start();
       $_SESSION['firstName'] = $firstName;
       $_SESSION['lastName'] = $lastName;
@@ -388,20 +351,12 @@
       $_SESSION['feature'] = $feature;
       $_SESSION['additionalFeature'] = $additionalFeature;
       $_SESSION['comment'] = $comment;
-      //$_SESSION['cost'] = $cost;
       $_SESSION['cardType'] = $cardType;
       $_SESSION['nameOnCard'] = $nameOnCard;
       $_SESSION['cardNumber'] = $cardNumber;
       $_SESSION['expireDate'] = $expireDate;
       $_SESSION['cvv'] = $cvv;
       $_SESSION['err_msg'] = $err_msg;
-      // For saving the delivery address.
-      // if (isset($_POST["DeliveryStreetAddress"])) {
-      //       $_SESSION['DeliveryStreetAddress'] = $BillingStreetAddress;
-      //       $_SESSION['DeliverySuburb2'] = $BillingSuburb;
-      //       $_SESSION['DeliveryState2'] = $BillingState;
-      //       $_SESSION['DeliveryPostcode2'] = $BillingPostcode;  
-      // }
 
       //For checking if there are any errors.
       $errorFreeFlag = true;
@@ -414,7 +369,7 @@
       }
 
       }
-}
+
       if ($errorFreeFlag) {
       // Calculate cost.
       $cost = calcCost( $product,$quantity);
@@ -522,8 +477,7 @@
       {
       header("Location:receipt.php");
       }
-
-}
+      }
       
 ?>
 </body>

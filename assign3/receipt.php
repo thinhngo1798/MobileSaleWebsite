@@ -2,7 +2,6 @@
  author: Quang Thinh Ngo
  created: Tuesday 18/03/2020
  last modified: Tuesday 07/04/2020-->
- 
  <!DOCTYPE html>
 <html lang="en"> 
     <head> 
@@ -36,6 +35,13 @@
         <article>
             <!--Main section which contains the main content.-->
             <?php
+
+            /* To prevent user directly access receipt.php*/
+            if (!isset($_SERVER['HTTP_REFERER'])) {
+            header('location:enquire.php');
+            exit;
+            }
+            
             echo "<section id='main'>";
             session_start();
             if (isset($_SESSION['firstName'])) {
